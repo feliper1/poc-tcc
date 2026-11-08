@@ -39,3 +39,17 @@ Docs: https://docs.expo.dev/eas/index.md
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
 - Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+
+## Convenções deste projeto
+Não altere arquivos fora do escopo pedido. Explique cada alteração.
+Componentes ficam em components/, um arquivo por componente.
+Estado nunca é modificado no lugar: sempre gere um novo valor.
+Antes de usar um pacote, confirme na documentação se ele funciona no Expo Go.
+
+## Contexto desta prova de conceito
+TCC: Sistema IoT com câmera e visão computacional (InceptionV3) para identificar aves em um comedouro.
+Problema: Precisamos alertar o usuário no celular assim que o backend registrar um novo avistamento.
+Tecnologia investigada: expo-notifications.
+Uma tela só, em App.tsx: um botão simulando a chegada de um avistamento e a exibição da notificação.
+Não usar Expo Router, a menos que a tecnologia investigada seja a navegação.
+Fora de escopo: login, design final, navegação com Expo Router e chamadas reais para o backend monolítico.
