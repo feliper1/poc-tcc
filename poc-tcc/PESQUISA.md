@@ -6,12 +6,11 @@ Estou fazendo o meu TCC: um comedouro inteligente que identifica aves via Incept
 ## Alternativas consideradas
 | Opção | Serve para | Decisão |
 |-------------|-----------------------|----------------------------|
-| Notificações Locais (Expo) | Alertas periódicos e protótipos sem servidor, usando tarefas em background. | **Sim.** Tem custo zero, não requer um backend contínuo, funciona offline e roda 100% no Expo Go, sendo a recomendação ideal para um protótipo de TCC.|
-| [pacote B] | [uso típico] | [sim ou não, e por quê] |
-| [pacote B] | [uso típico] | [sim ou não, e por quê] |
-| [pacote B] | [uso típico] | [sim ou não, e por quê] |
-| [pacote B] | [uso típico] | [sim ou não, e por quê] |
-| [pacote B] | [uso típico] | [sim ou não, e por quê] |
+| Notificações Locais (Expo) | Alertas periódicos e protótipos sem servidor, usando tarefas em background. | **Sim.** Tem custo zero, não requer backend contínuo e roda 100% no Expo Go, sendo ideal para validar a interface no protótipo do TCC.|
+| Firebase Cloud Messaging (FCM) | Notificações push remotas robustas e integradas ao ecossistema Google. | **Não.** Exige configuração complexa de backend, credenciais nativas e não funciona no Expo Go sem criar um Custom Dev Client (EAS Build), o que foge do escopo atual. |
+| OneSignal | Campanhas de marketing, envio massivo de push e segmentação de usuários com painel visual. | **Não.** Traz um overhead desnecessário de um SDK de terceiros para um projeto focado apenas em alertas de hardware. |
+| AWS SNS | Mensageria corporativa em larga escala altamente integrada com infraestrutura em nuvem AWS. | **Não.** Alta complexidade de configuração de tópicos e permissões (IAM) para disparar um alerta simples de avistamento. |
+| Pusher Beams | Alertas transacionais de baixa latência frequentemente integrados a WebSockets. | **Não.** Dependência de infraestrutura externa e limite de dispositivos no plano gratuito, sem benefícios claros sobre as notificações locais para esta PoC. |
 ## Fontes oficiais lidas
 - Documentação da API expo-notifications (https://docs.expo.dev/versions/latest/sdk/notifications/)
 - Firebase Cloud Messaging (https://firebase.google.com/docs/cloud-messaging?hl=pt-br)
@@ -30,5 +29,7 @@ O agente insistiu em usar o enum AndroidImportance (tanto nomeado quanto via nam
 -------------------------------------------
 O agente incluiu a criação de canais no Android que quebrou o Expo Go; a solução foi remover a configuração do canal e usar o padrão
 ------------------------------------------------
+
 ## Resultado e próximos passos no TCC
-- [o que a prova de conceito demonstrou e o que muda no TCC]
+- **Resultado da PoC:** A Prova de Conceito comprovou que é viável alertar o usuário de forma imediata e nativa utilizando notificações locais no ecossistema Expo. Vencemos o desafio das restrições nativas do Expo Go (como a falha de criação de canais no Android) e validamos a interface do alerta sem incorrer em custos de infraestrutura de nuvem nesta fase.
+- **Próximos passos no TCC:** O passo seguinte será substituir o "botão de simulação" pela integração real com a borda. Quando a Raspberry Pi 3B capturar a foto, a rede InceptionV3 identificar a espécie e o dado for recebido pelo aplicativo (via polling no backend ou WebSocket), o app acionará o agendamento local (scheduleNotificationAsync) de forma autônoma para avisar o usuário que a ave está no comedouro.
