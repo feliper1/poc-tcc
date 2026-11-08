@@ -1,9 +1,22 @@
 import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Button, Platform, StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
+  const simulateSighting = async () => {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'Novo Avistamento!',
+        body: 'Um Bem-te-vi visitou o comedouro',
+      },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+        seconds: 2,
+      },
+    });
+  };
+
   useEffect(() => {
     const requestNotificationPermission = async () => {
       if (Platform.OS === 'web') {
@@ -23,7 +36,14 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Button
+        title="Simular Avistamento"
+        onPress={() => {
+          simulateSighting().catch(error => {
+            console.error('Failed to schedule sighting notification:', error);
+          });
+        }}
+      />
       <StatusBar style="auto" />
     </View>
   );
